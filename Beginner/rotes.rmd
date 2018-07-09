@@ -84,3 +84,32 @@ const put = router.put('/:id',(req, res, next) => {
   });
 });
 ```
+
+<hr>
+
+### Organizando:
+
+vamos criar uma pasta dentro do src - de `routes`, um arquivo de routes. Deixamos uma rota com a raiz, toda a vez que chamamos a api.
+
+```js
+'use strict';
+
+const express = require('express'); // para criar a rota
+const router = express.Router();
+
+router.get('/',(req, res, next) => {
+  res.status(200).send({
+    title: "Node Store Api",
+    version: "0.0.2"
+  });
+}); //a mesma rota
+
+module.exports = router;
+```
+
+no arquivo `app.js`
+
+```js
+// carrega as rotas
+const index = require('./routes/index');
+```

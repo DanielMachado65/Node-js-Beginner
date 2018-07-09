@@ -128,6 +128,8 @@ const port = normalizePort(process.env.PORT || '3000');
   |___ server.js : configuração do servidor
 |---- src
   |___ app.js : configuração da aplicação
+  |--- routes
+    |____ index.js - para mapear as rotas
 ```
 
 no código temos que implementar as seguintes funções:
