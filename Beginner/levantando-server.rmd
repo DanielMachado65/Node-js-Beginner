@@ -172,4 +172,7 @@ Para criar um wacted, devemos criar com um pacote. `nodemon`;
 
 ```shell
 npm install nodemon --save
+
+# or até mesmo para forçar a instalação
+npm install -g nodemon
 ```
