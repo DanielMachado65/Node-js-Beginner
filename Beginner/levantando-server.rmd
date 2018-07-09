@@ -1,0 +1,175 @@
+# Instalação do Node
+
+* `node`- executar js.
+* `npm` - gerenciador de pacotes.
+
+
+>  Site para instalação
+  * (https://nodejs.org/en/)
+
+### Linux:
+
+```shell
+curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+sudo apt-get install -y nodejs
+```
+
+<hr>
+
+### `npm` init
+
+inicializando uma aplicação do `node.js` init.
+
+```shell
+# criando o básico.
+npm init -y
+```  
+
+o node precisa das coisas essenciais para a web. Criando o servidor web. (ele é auto-request)
+
+```js
+'use strict' // usando de maneira restrita. Ele vai falhar na copilação
+```
+
+instalar pacotes essenciais para o `HTTP`.
+
+```shell
+# npm install ['pacotes']
+npm install http express debug --save # para salvar numa pasta, nunca deverá enviar essa pasta para o servidor. Por causa da pasta que tem um monte de modulos.
+```
+
+* pacotes:
+  - `debug` - para debugar o código
+  - `express` - prove toda a parte do mvc da aplicação.
+  - `http` - servidor de http. Responder uma requisição e escutar.
+
+* ###### Baixar as dependencies:
+  para pode instalar novamente é apenas `npm install`
+
+<hr>
+
+### Criando um servidor Web
+
+importar os pacotes para a aplicação.
+
+```js
+const http = require('http');
+const debug = require('debug')('nodestr:server'); // dando um nome ao servidor
+const express = require('express');
+// constante nome_constante = require('') - sem um caminho, ele vai dentro da pasta node-modules.
+const or var(let)
+
+// se você quiser pegar da sua pasta (arquivo local):
+const xpto = require('./xpto/teste');
+```
+
+criando o servidor:
+
+```js
+const app = express(); // constante para a aplicação.
+const port = 3000; //constante para a porta da aplicação - não devemos utilizar fixo, temos que achar um porta livre para rodar a aplicação. - quando for para o servidor não consegue garantir que o servidor já está em uso
+app.set('port', port);
+
+const server = http.createServer(app); // criando o servidor.
+const router = express.Router(); // arquivo de rotas.
+
+
+// podemos utilizar `var` ou `const`
+let route = router.get('/',(req, res, next) => {
+  res.status(200).send({
+    title: "Node Store Api",
+    version: "0.0.1"
+  });
+});
+
+// criamos uma rota no aplicativo.
+app.use('/',route);
+```
+
+Com essas caracteristicas temos um MVC, temos um servidor. Agora precisamos informar para o servidor ouvir nessa porta:
+
+```js
+server.listen(port);
+console.log('Api rodando na porta' + port);
+```
+
+#### Normalizando a Porta:
+
+O server que estamos criando, é o arquivo de produção. Precisamos de uma porta disponivel no servidor, para poder rodar a `API`.
+  * **Regra:** verificar se tem uma porta disponivel, senão utilizar a porta 3000.
+
+```js
+
+// foi tirada para o gereador de código do express
+function normalizePort(val){
+  const port = parseInt(val, 10); // tento converter para um inteiro.
+  if (isNaN(port)) {
+    return val; // se o valor não for um número.
+  }
+
+  if (port >= 0) {
+    return port;
+  }
+
+  return false;
+}
+
+const port = normalizePort(process.env.PORT || '3000');
+// processo em ambiente, process.env (irá distribrui uma porta)
+```
+
+### @Dicas:
+
+é interessante seguimentar as pastas para possuir maior controle sobre a aplicação. Vamos fazer da seguinte forma:
+
+```
+# seguimentar os arquivos em pastas. Servidor de APP
+|---- bin
+  |___ server.js : configuração do servidor
+|---- src
+  |___ app.js : configuração da aplicação
+```
+
+no código temos que implementar as seguintes funções:
+
+```js
+const app = require('../src/app'); // remove o app desse arquivo
+
+
+/* no arquivo app.js */
+'use strict';
+const express = require('express');
+const app = express();
+
+const route = router.get('/',(req, res, next) => {
+  res.status(200).send({
+    title: "Node Store Api",
+    version: "0.0.1"
+  });
+});
+
+app.use('/',route);
+
+module.exports = app; // exportar a aplicação para os módulos
+```
+
+<hr>
+
+### @NPM start
+
+podemos utilizar o gerenciador de pacotes para poder executar as coisas. Com o `"scripts"`
+
+```json
+{
+  "scripts": {
+    "start": "node ./bin/server.js",
+    "outro comando": "node ./caminho"
+  }
+}
+```
+
+Para criar um wacted, devemos criar com um pacote. `nodemon`;
+
+```shell
+npm install nodemon --save
+```

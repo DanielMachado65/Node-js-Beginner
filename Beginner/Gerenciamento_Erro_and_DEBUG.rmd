@@ -1,0 +1,47 @@
+# Gerenciamento de Erro:
+
+Se tivermos com erro na aplicação precisamos tratar os erros da aplicação. Então é interessante tratar os erros de porta ou de privelegios.
+
+```js
+function onError(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+
+  const bind = typeof port === 'string' ?
+    'Pipe ' + port : 'Port ' + port;
+
+  switch (error.code) {
+    case 'EACCES':
+      console.log(bind + ' requires elevated privaleges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.log(bind + ' is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
+
+// .on(); -- vai tratar dos `eventos`, que possam acontecer na api
+server.on('error', onError);
+```
+
+Normalmente é dificil de ter error's de privelegios ou de portas. Porém fica o exemplo.
+
+## Adicionando o Debug:
+
+```js
+function onListening() {
+  const addr = server.address();
+  const bind = typeof port === 'string' ?
+    'Pipe ' + port : 'Port ' + port;
+
+  debug('Listening on ' + bind);
+}
+
+// o mesmo evento que temos para error, agora temos para `escutar(Listening)`
+server.on('listening', onListening);
+```
